@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Applymath MAPI-3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component"></script>
+  <script src="https://cdn.jsdelivr.net/gh/ngokevin/aframe-fonts/aframe-fonts.min.js"></script>
+  <script src="https://unpkg.com/aframe-event-set-component@5.0.0/dist/aframe-event-set-component.min.js"></script>
+  <script src="https://yoannmoi.net/nipplejs/dist/nipplejs.min.js"></script> <!-- Agrega nipplejs -->
+  <script src="https://cdn.rawgit.com/mrturck/aframe-joystick/master/joystick.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.js"></script>
+  <script src="https://unpkg.com/aframe-aabb-collider-component@3.1.0/dist/aframe-aabb-collider-component.min.js"></script>
+  <script>
+    AFRAME.registerComponent('collision-preventer', {
+      schema: {
+        target: {type: 'selector'}
+      },
+      init: function () {
+        this.el.addEventListener('collide', this.onCollide.bind(this));
+      },
+      onCollide: function (evt) {
+        if (evt.detail.body.el === this.data.target) {
+          // Detén el movimiento de la cámara cuando ocurre una colisión
+          const position = this.el.getAttribute('position');
+          this.el.setAttribute('position', position); // Resetear la posición para prevenir movimiento
+        }
+      }
+    });
+  </script>
+  <style>
+    #joystickWrapper1 {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      width: 100px;
+      height: 100px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="joystickWrapper1"></div>
+  <a-scene physics="debug: true; gravity: -9.8">
+    <!-- Camera with look-controls and wasd-controls for movement -->
+    <a-entity id="cameraRig" position="0 1.6 4.3" dynamic-body="shape: box; mass: 1" collision-preventer="target: .collidable">
+      <a-entity camera look-controls wasd-controls>
+        <a-entity 
+          raycaster="objects: .clickable" 
+          cursor="fuse: false; rayOrigin: mouse">
+        </a-entity>
+      </a-entity>
+    </a-entity>
+    
+
+    <a-assets>
+      <img id="floor-texture" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/laminate-flooring-brown_albedo.png?v=1718071535074">
+      <img id="wall-texture" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/fiberous_plaster_albedo.png?v=1718145994621">
+      <img id="ceiling-texture" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/fiberous_plaster_albedo.png?v=1718145994621">
+      <img id="viga2-texture" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/worn_metal4_albedo.png?v=1718145873704">
+      <img id="vigas-texture" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/worn_metal4_albedo.png?v=1718145873704">
+      <img id="Mate1" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Linear%2BAlgebra%2BExample.jpg?v=1717997373625">
+      <img id="Mate2" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Vertical-Spring-Mass-System.png?v=1724906734102">
+      <img id="Mate3" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Picture2.png?v=1718039712513">
+      <img id="Ing1" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Picture5-transformed.png?v=1718073304151">
+      <img id="Ing2" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Picture7-transformed.png?v=1718073919210">
+      <img id="Ing3" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Picture9.png?v=1718075229047">
+      <img id="Hab1" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/FFT?v=1717994764675">
+      <img id="Hab2" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Picture1.png?v=1718040868896">
+      <img id="Hab3" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Screenshot%202023-11-24%20231213.png?v=1718042679871">
+      <img id="Hab4" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_114919669.png?v=1718124560767">
+      <img id="Hab5" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-10_123137254.png?v=1718040698387">
+      <img id="Hab6" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_115716308.png?v=1718125037886">
+      <img id="Hab7" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_121153185.png?v=1718125914713">
+      <img id="Hab8" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_133404018.png?v=1718130850301">
+      <img id="Hab8b" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_140849495.png?v=1718132930504">
+      <img id="Hab9" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_134044397.png?v=1718131245250">
+      <img id="Hab10" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_135236615.png?v=1718131957405">
+      <img id="Hab11" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/image_2024-06-11_135621175.png?v=1718132182078">
+      <img id="Hab12" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/dc1fa92b-033b-453e-a669-3c6bbbdf3308.image.png?v=1718132323366">
+      <img id="Hab13" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/503dbc92-c153-4d0b-952d-e483aae72de8.image.png?v=1718132352240">
+      <img id="Hab14" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/6b88bb53-70f1-44a4-af4f-51a381e7c27e.image.png?v=1718132382009">
+      <img id="Hab15" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/PosterCasiFinal.png?v=1718133328992">
+      <a-assets-item id="mano-escaneada" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/brazo-paula.gltf?v=1718122577672"></a-assets-item>
+      <a-assets-item id="protesis" src="https://cdn.glitch.global/10245cdd-0ea0-4b42-afd8-b143407c4136/Manocompleta1.gltf?v=1718162211061"></a-assets-item>
+    </a-assets>
+
+    <!-- PASILLO -->
+    <!-- PAREDES -->
+    <a-box position="2.5 1.75 -5" width="0.1" height="3.5" depth="20" material="src: #wall-texture; repeat: 7 2" static-body aabb-collider="objects: #cameraRig"></a-box>
+    <a-box position="-2.5 1.75 -5" width="0.1" height="3.5" depth="20" material="src: #wall-texture; repeat: 7 2" static-body aabb-collider="objects: #cameraRig"></a-box>
+    <a-box position="0 1.75 5" width="0.1" height="3.5" rotation="0 90 0" depth="5" material="src: #wall-texture; repeat: 1.5 2" static-body aabb-collider="objects: #cameraRig"></a-box>
+    <a-box position="0 0 -5" width="5" height="0.1" depth="20" src="#floor-texture" repeat = "1 5"></a-box>
+    <a-box position="0 3.5 -5" width="5" height="0.1" depth="20" src="#ceiling-texture" repeat="1 5"></a-box>
+
+    <!-- COLUMNAS -->
+    <a-box position="-2.25 0.25 -5" width="0.5" height="0.5" depth="20" material="src: #viga2-texture; repeat: 1 20"></a-box>
+    <a-box position="2.25 0.25 -5" width="0.5" height="0.5" depth="20" material="src: #viga2-texture; repeat: 1 20"></a-box>  
+    <a-box position="-2.25 3.25 -5" width="0.5" height="0.5" depth="20" material="src: #vigas-texture; repeat: 1 20"></a-box>
+    <a-box position="2.25 3.25 -5" width="0.5" height="0.5" depth="20" material="src: #vigas-texture; repeat: 1 20"></a-box>
+    <a-box position="2.25 2 -15.25" width="0.5" height="0.5" depth="6" rotation="90 0 0" material="src: #vigas-texture; repeat: 1 20"></a-box> 
+    <a-box position="-2.25 2 -15.25" width="0.5" height="0.5" depth="6" rotation="90 0 0" material="src: #vigas-texture; repeat: 1 20"></a-box>
+    <a-box position="-2.25 1.75 4.75" width="0.5" height="0.5" depth="5" rotation="90 0 0" material="src: #vigas-texture; repeat: 1 20"></a-box>
+    <a-box position="2.25 1.75 4.75" width="0.5" height="0.5" depth="5" rotation="90 0 0" material="src: #vigas-texture; repeat: 1 20"></a-box>
+    <a-box position="0 3.1 4.75" width="0.5" height="0.5" depth="6" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="0 0.25 4.75" width="0.5" height="0.5" depth="6" rotation="0 90 0" src="#viga2-texture"></a-box>
+    
+    <!-- CUADROS -->
+    
+    <a-box position="2.45 1.7 0" rotation="0 -90 0" width="1.3" height="1.9" depth="0.1" color="brown"></a-box>
+      <a-plane position="2.35 1.7 0" rotation="0 -90 0" width="1" height="1.5" src="#Ing1" class="clickable" data-menu="menu1"
+        event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+        event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+    
+    <a-box position="2.45 1.7 -5" rotation="0 -90 0" width="1.3" height="1.9" depth="0.1" color="brown"></a-box>
+      <a-plane position="2.35 1.7 -5" rotation="0 -90 0" width="1" height="1.5" src="#Ing2" class="clickable" data-menu="menu2"
+        event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+        event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+      <a-box position="2.45 1.7 -10" rotation="0 -90 0" width="1.3" height="1.9" depth="0.1" color="brown"></a-box>
+      <a-plane position="2.35 1.7 -10" rotation="0 -90 0" width="1" height="1.5" src="#Ing3" class="clickable" data-menu="menu3"
+        event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+        event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+      <a-box position="-2.45 1.7 -0" rotation="0 90 0" width="1.3" height="1.9" depth="0.1" color="brown"></a-box>
+      <a-plane position="-2.35 1.7 0" rotation="0 90 0" width="1" height="1.5" src="#Mate1" class="clickable" data-menu="menu4" static-body
+        event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+        event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+      <a-box position="-2.45 1.7 -5" rotation="0 90 0" width="1.3" height="1.9" depth="0.1" color="brown"></a-box>
+      <a-plane position="-2.35 1.7 -5" rotation="0 90 0" width="1" height="1.5" src="#Mate2" class="clickable" data-menu="menu5" static-body
+        event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+        event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+      <a-box position="-2.45 1.7 -10" rotation="0 90 0" width="1.3" height="1.9" depth="0.1" color="brown"></a-box>
+      <a-plane position="-2.35 1.7 -10" rotation="0 90 0" width="1" height="1.5" src="#Mate3" class="clickable" data-menu="menu6" static-body
+        event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+        event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <!-- HABITACIÓN -->
+    <a-box position="0 0 -23" width="16" height="0.1" depth="16" src="#floor-texture" repeat = "3 3"></a-box>
+    <a-box position="0 5 -23" width="16" height="0.1" depth="16" src="#ceiling-texture"></a-box>
+
+    <!-- Vigas -->
+    <a-box position="-5 0.25 -15.25" width="0.5" height="0.5" depth="6" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="5 0.25 -15.25" width="0.5" height="0.5" depth="6" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="0 4.75 -15.25" width="0.5" height="0.5" depth="16" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="0 3.25 -15.25" width="0.5" height="0.5" depth="5" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="0 0.25 -30.75" width="0.5" height="0.5" depth="16" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="0 4.75 -30.75" width="0.5" height="0.5" depth="16" rotation="0 90 0" src="#viga2-texture"></a-box>
+    <a-box position="-7.75 0.25 -23" width="0.5" height="0.5" depth="16" src="#viga2-texture"></a-box>
+    <a-box position="7.75 0.25 -23" width="0.5" height="0.5" depth="16" src="#viga2-texture"></a-box>
+    <a-box position="-7.75 4.75 -23" width="0.5" height="0.5" depth="16" src="#viga2-texture"></a-box>
+    <a-box position="7.75 4.75 -23" width="0.5" height="0.5" depth="16" src="#viga2-texture"></a-box>
+
+    <!-- Columnas -->
+    <a-box position="-7.75 2.5 -15.25" width="0.5" height="0.5" depth="5" rotation="90 0 0" src="#viga2-texture"></a-box>
+    <a-box position="7.75 2.5 -15.25" width="0.5" height="0.5" depth="5" rotation="90 0 0" src="#viga2-texture"></a-box>
+    <a-box position="-7.75 2.5 -30.75" width="0.5" height="0.5" depth="5" rotation="90 0 0" src="#viga2-texture"></a-box>
+    <a-box position="7.75 2.5 -30.75" width="0.5" height="0.5" depth="5" rotation="90 0 0" src="#viga2-texture"></a-box>
+
+    <!-- Paredes -->
+    <a-box position="-8 2.5 -23" width="0.1" height="5" depth="16" material="src: #wall-texture; repeat: 4 2"></a-box>
+    <a-box position="8 2.5 -23" width="0.1" height="5" depth="16" material="src: #wall-texture; repeat: 4 2"></a-box>
+    <a-box position="-5.25 2.5 -15" width="0.1" height="5" depth="5.5" rotation="0 90 0" material="src: #wall-texture; repeat: 2.5 3.2"></a-box>
+    <a-box position="5.25 2.5 -15" width="0.1" height="5" depth="5.5" rotation="0 90 0" material="src: #wall-texture; repeat: 2.5 3.2"></a-box>
+    <a-box position="0 2.5 -31" width="0.1" height="5" depth="16" rotation="0 90 0" material="src: #wall-texture; repeat: 5 2"></a-box>
+    <a-box position="0 4.25 -15" width="0.1" height="1.5" depth="5" rotation="0 90 0" material="src: #wall-texture; repeat:2.5 1"></a-box>
+
+    <!-- CUADROS -->
+    
+     <a-box position="5 2 -15.1" rotation="180 0 180" width="4.0" height="2.4" depth="0.1" color="brown"></a-box>
+      <a-plane position="5 2 -15.2" rotation="0 180 0" width="3.6" height="2" src="#Hab1" class="clickable" data-menu="menu7" static-body
+    event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+    event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="7.9 2.5 -18" rotation="180 90 180" width="4.2" height="2.4" depth="0.1" color="brown"></a-box>
+      <a-plane position="7.8 2.5 -18" rotation="0 -90 0" width="3.8" height="2" src="#Hab2" class="clickable" data-menu="menu8" static-body
+    event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+    event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+      
+    <a-box position="7.9 2.5 -25" rotation="180 90 180" width="1.5" height="2.5" depth="0.1" color="brown"></a-box>
+      <a-plane position="7.8 2.5 -25" rotation="0 -90 0" width="1.1" height="2.1" src="#Hab3" class="clickable" data-menu="menu9" static-body
+    event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+    event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+      <a-box position="7.9 2.5 -28" rotation="180 90 180" width="1.5" height="2.5" depth="0.1" color="brown"></a-box>
+      <a-plane position="7.8 2.5 -28" rotation="0 -90 0" width="1.1" height="2.1" src="#Hab4" class="clickable" data-menu="menu10" static-body
+    event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+    event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+  <a-box position="4.5 2.5 -30.9" rotation="180 180 180" width="4" height="2" depth="0.1" color="brown"></a-box>
+    <a-plane position="4.5 2.5 -30.8" rotation="0 0 0" width="3.3" height="1.3" src="#Hab5" class="clickable" data-menu="menu11" static-body 
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+     
+  <a-box position="-4.5 3.3 -30.9" rotation="180 180 180" width="1.5" height="2" depth="0.1" color="brown"></a-box>
+    <a-plane position="-4.5 3.3 -30.8" rotation="0 0 0" width="1.3" height="1.8" src="#Hab8b" class="clickable" data-menu="menu12" static-body 
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+  <a-box position="0 3.5 -30.9" rotation="180 180 180" width="1.5" height="1.5" depth="0.1" color="brown"></a-box> 
+    <a-plane position="0 3.5 -30.8" rotation="0 0 0" width="1.2" height="1.2" src="#Hab6" class="clickable" data-menu="menu13" static-body 
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"        
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane> 
+    
+  <a-box position="-4.5 1.5 -30.9" rotation="180 180 180" width="2.3" height="1.3" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-4.5 1.5 -30.8" rotation="0 0 0" width="1.9" height="1" src="#Hab8" class="clickable" data-menu="menu14" static-body 
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+  <a-box position="-0 1.5 -30.9" rotation="180 180 180" width="1.5" height="1.5" depth="0.1" color="brown"></a-box> 
+    <a-plane position="0 1.5 -30.8" rotation="0 0 0" width="1.2" height="1.2" src="#Hab7" class="clickable" data-menu="menu15" static-body 
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane> 
+  
+    <a-box position="-7.9 3.5 -27" rotation="0 90 0" width="2" height="1.7" depth="0.1" color="brown"></a-box> 
+     <a-plane position="-7.8 3.5 -27" rotation="0 90 0" width="1.5" height="1.3" src="#Hab9" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="-7.9 1.5 -27" rotation="0 90 0" width="2" height="1.7" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-7.8 1.5 -27" rotation="0 90 0" width="1.5" height="1.3" src="#Hab10" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="-7.9 3.5 -23" rotation="0 90 0" width="2" height="1.7" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-7.8 3.5 -23" rotation="0 90 0" width="1.5" height="1.3" src="#Hab11" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="-7.9 1.5 -23" rotation="0 90 0" width="2" height="1.7" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-7.8 1.5 -23" rotation="0 90 0" width="1.5" height="1.3" src="#Hab12" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="-7.9 3.5 -19" rotation="0 90 0" width="2" height="1.7" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-7.8 3.5 -19" rotation="0 90 0" width="1.5" height="1.3" src="#Hab13" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="-7.9 1.5 -19" rotation="0 90 0" width="2" height="1.7" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-7.8 1.5 -19" rotation="0 90 0" width="1.5" height="1.3" src="#Hab14" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+    
+    <a-box position="-5 2.5 -15.1" rotation="180 0 180" width="2" height="3" depth="0.1" color="brown"></a-box> 
+    <a-plane position="-5 2.5 -15.2" rotation="180 0 180" width="1.7" height="2.7" src="#Hab15" class="clickable"
+      event-set__mouseenter="_event: mouseenter; scale: 1.2 1.2 1.2; material: color: white"
+      event-set__mouseleave="_event: mouseleave; scale: 1 1 1; material: color: white"></a-plane>
+
+    <!-- Menús -->
+    <!-- Menú 1 -->
+    <a-entity id="menu1" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Dispositivos fundamentales para almacenar datos del usuario y de esta forma lograr que la protesis responda de manera precisa a los movimientos deseados." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton1" data-menu="menu1" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 2 -->
+    <a-entity id="menu2" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Componentes que procesan la informacion de los sensores y controlan los movimientos de la protesis." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton2" data-menu="menu2" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 3 -->
+    <a-entity id="menu3" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Tambien llamado EMG, es una tecnica empleada para medir la actividad electrica producida por los musculos." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton3" data-menu="menu3" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 4 -->
+    <a-entity id="menu4" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Bases de matrices y vectores necesarios para modelar y simular cualquier movimiento." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton4" data-menu="menu4" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 5 -->
+    <a-entity id="menu5" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Base para el modelado dinamico del comportamiento de un sistema biomecanico, se usan para entender y predecir el comportamiento de las articulaciones de una protesis." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton5" data-menu="menu5" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 6 -->
+    <a-entity id="menu6" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Explicacion de numeros complejos, empleados ampliamente en el comportamiento de componentes electronicos y filtros de frecuencia." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton6" data-menu="menu6" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 7 -->
+    <a-entity id="menu7" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Herramienta matematica que se utiliza para analizar las frecuencias presentes en una senal. En este trabajo se aplica para el filtro de senales EMG para la reconstruccion del movimiento." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton7" data-menu="menu7" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 8 -->
+    <a-entity id="menu8" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Proceso para capturar la geometria exacta de una parte del cuerpo de una persona y ajustar una protesis a su anatomia." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton8" data-menu="menu8" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 9 -->
+    <a-entity id="menu9" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Creacion del modelo detallado del ensamblaje de la protesis" color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton9" data-menu="menu9" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 10 -->
+    <a-entity id="menu10" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Construccion fisica de la protesis para probar su funcionalidad y ergonomia." color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton10" data-menu="menu10" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 11 -->
+    <a-entity id="menu11" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Procedimiento realizado en el estudio para la lectura y el procesamiento de senales" color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton11" data-menu="menu11" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 12 -->
+    <a-entity id="menu12" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Dispositivo de lectura" color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton12" data-menu="menu12" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 13 -->
+    <a-entity id="menu13" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Puntos de lectura Bicep" color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton13" data-menu="menu13" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+
+    <!-- Menú 14 -->
+    <a-entity id="menu14" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Dispositivos de lectura y calibracion de senales" color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton14" data-menu="menu14" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+    
+    <!-- Menú 15 -->
+    <a-entity id="menu15" position="0 1.7 3" visible="false">
+      <a-plane width="2" height="1" color="#FFF">
+        <a-text value="Puntos de lectura Tricep" color="#000" position="0 0 0.1" align="center" width="1.8"></a-text>
+        <a-plane id="closeButton15" data-menu="menu15" position="0.9 0.4 0.1" width="0.2" height="0.2" color="#FF0000" class="clickable">
+          <a-text value="X" color="#000" align="center" position="0 0 0.1"></a-text>
+        </a-plane>
+      </a-plane>
+    </a-entity>
+    
+    <a-text value="Algebra Lineal" position="-2.4 2.8 0" rotation="0 90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Ecuaciones Diferenciales" position="-2.4 2.8 -5" rotation="0 90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Matematicas Avanzadas" position="-2.4 2.8 -10" rotation="0 90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Sensores" position="2.4 2.8 0" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Microcontroladores" position="2.4 2.8 -5" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Electromiografia" position="2.4 2.8 -10" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Transformada rapida de Fourier" position="5 3.7 -15.3" rotation="0 180 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Escaneo 3D" position="7.9 4 -18" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Mano escaneada" position="7.9 4 -22" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Desarrollo CAD" position="7.9 4 -25" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Primer prototipo" position="7.9 4 -28" rotation="0 -90 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+   
+    <a-text value="Muestreo de movimientos" position="4.5 4 -30.8" rotation="0 0 0" color="#000000" width="4" align="center" font="dejavu"></a-text>
+    <a-text value="Montaje" position="-2.3 2.5 -30.8" rotation="0 0 0" color="#000000" width="5" height="5" align="center" font="dejavu"></a-text>
+ 
+    <!-- Modelos 3D -->
+    <a-entity gltf-model="#mano-escaneada" position="7.5 2.5 -22" rotation = "-10 0 0" scale="3 3 3" material="color: red"  animation__rotate="property: rotation; to: -10 360 0; loop: true; dur: 8000; easing: linear"  ></a-entity> 
+    <a-entity gltf-model="#protesis" position="0 2 -23" rotation = "0 0 45" scale="4.5 4.5 4.5" material="color: red"  animation__rotate="property: rotation; to: 0 360 45; loop: true; dur: 8000; easing: linear"  ></a-entity> 
+    <a-sky color="#fffff"></a-sky>
+  </a-scene>
+  
+  
+  <script src="Prueba.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const joystick = nipplejs.create({
+        zone: document.getElementById('joystickWrapper1'),
+        mode: 'static',
+        position: { left: '50px', bottom: '50px' },
+        color: 'red',
+        size: 100
+      });
+
+      const maxSpeed = 0.03; // Velocidad máxima
+      let currentDirection = { x: 0, y: 0 };
+      let isJoystickMoving = false;
+
+      joystick.on('move', (evt, data) => {
+        if (data.direction) {
+          currentDirection = data.direction;
+          isJoystickMoving = true;
+        }
+      });
+
+      joystick.on('end', () => {
+        isJoystickMoving = false;
+      });
+
+      // Función para mover la cámara continuamente
+      function moveCameraLoop() {
+        if (isJoystickMoving) {
+          moveCamera(currentDirection);
+        }
+        requestAnimationFrame(moveCameraLoop);
+      }
+
+      // Iniciar el bucle de movimiento
+      moveCameraLoop();
+
+      function moveCamera(direction) {
+        let vector = new THREE.Vector3();
+
+        if (direction.y === 'up') {
+          vector.z -= maxSpeed;
+        } else if (direction.y === 'down') {
+          vector.z += maxSpeed;
+        }
+
+        if (direction.x === 'left') {
+          vector.x -= maxSpeed;
+        } else if (direction.x === 'right') {
+          vector.x += maxSpeed;
+        }
+
+        const camera = document.querySelector('[camera]');
+        const cameraRotation = new THREE.Euler().setFromQuaternion(camera.object3D.quaternion, 'YXZ');
+        vector.applyEuler(cameraRotation);
+
+        const cameraRig = document.getElementById('cameraRig');
+        cameraRig.object3D.position.x += vector.x;
+        cameraRig.object3D.position.z += vector.z;
+      }
+    });
+  </script>
+  
+  
+</body>
+</html>
